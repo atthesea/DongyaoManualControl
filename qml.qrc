@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>gif/loading.gif</file>
+        <file>component/main/MainPage.qml</file>
+        <file>component/common/SettingsIcon.qml</file>
+        <file>component/load/LoadPage.qml</file>
+        <file>component/admin/AdminPage.qml</file>
+        <file>component/common/QyhRadioDelegate.qml</file>
+        <file>component/common/QyhHSlider.qml</file>
+        <file>component/common/QyhVSlider.qml</file>
+    </qresource>
+</RCC>
