@@ -22,7 +22,7 @@ Page {
         anchors.top: animated.bottom
     }
 
-    Component.onCompleted: {
+    function init(){
         g_config.load()
     }
 
@@ -32,10 +32,8 @@ Page {
             name.text = qsTr("load config fail!!!!")
         }
         onLoadSuccess:{
-            name.text = qsTr("connect to dispatch server...")
-            msgCenter.init();
-
             name.text = qsTr("finish ...")
+            msgCenter.init();
             window.showMain();
         }
     }

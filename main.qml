@@ -16,45 +16,96 @@ ApplicationWindow {
     height: 480
     title: qsTr("DongyaoApp")
 
-    StackView{
-        id: stack
-        initialItem: mainpage
-        anchors.fill: parent
-    }
-
-    Component {
+    property bool hasInitLoad: false
+    property bool hasInitAdmin: false
+    property bool hasInitMain: false
+    //主界面
+    MAIN.MainPage{
         id: mainpage
-
-        MAIN.MainPage{
-
-        }
+        anchors.fill: parent
+        visible: false
     }
 
-    Component{
+    //載入界面
+    LOAD.LoadPage{
         id: loadpage
-        LOAD.LoadPage{
+        anchors.fill: parent
+        visible: false
+    }
 
+    //管理员界面
+    ADMIN.AdminPage{
+        id:adminpage
+        anchors.fill: parent
+        visible: false
+    }
+
+    //显示提示语
+    Rectangle{
+        id:toastRect
+        color: "#1C1C1CD8"
+        visible: false
+        anchors.centerIn: parent
+        width: toast.width*4
+        height: toast.height*2
+        z:100
+        Text {
+            id: toast
+            text: qsTr("")
+            font.pixelSize: 35
+            font.bold: true
+            color: "white"
+            anchors.centerIn: parent
+            function show(str){
+                toast.text = str;
+                toastRect.visible = true;
+            }
+            Timer{
+                interval: 3000
+                repeat: true
+                running: toastRect.visible
+                onTriggered: {
+                    toastRect.visible = false;
+                }
+            }
         }
     }
 
-    Component{
-        id:adminpage
-        ADMIN.AdminPage{
-
+    function showLoading(){
+        loadpage.visible =  true;
+        mainpage.visible = false;
+        adminpage.visible = false;
+        if(!window.hasInitLoad){
+            loadpage.init();
+            window.hasInitLoad = true
         }
+    }
+
+    function showAdmin(){
+        loadpage.visible =  false;
+        mainpage.visible = false;
+        adminpage.visible = true;
+        if(!window.hasInitAdmin){
+            adminpage.init();
+            window.hasInitAdmin = true
+        }
+    }
+
+    function showMain(){
+        loadpage.visible =  false;
+        mainpage.visible = true;
+        adminpage.visible = false;
+        if(!window.hasInitMain){
+            mainpage.init();
+            window.hasInitMain = true
+        }
+    }
+
+    function showToast(str){
+        toast.show(str);
     }
 
     Component.onCompleted: {
-        stack.push(loadpage);
-    }
-
-    function showAdmin()
-    {
-        stack.push(adminpage);
-    }
-
-    function showMain()
-    {
-        stack.push(mainpage);
+        showLoading();
     }
 }

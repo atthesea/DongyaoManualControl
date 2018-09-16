@@ -6,8 +6,8 @@
         <file>component/common/SettingsIcon.qml</file>
         <file>component/load/LoadPage.qml</file>
         <file>component/admin/AdminPage.qml</file>
-        <file>component/common/QyhRadioDelegate.qml</file>
         <file>component/common/QyhHSlider.qml</file>
         <file>component/common/QyhVSlider.qml</file>
+        <file>component/common/QyhRadioWithStatusIndicator.qml</file>
     </qresource>
 </RCC>

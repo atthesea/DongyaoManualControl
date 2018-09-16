@@ -11,18 +11,23 @@ void TcpClient::slot_connectToServer(QString _ip, int _port)
     if(socket == nullptr){
         socket = new QTcpSocket;
     }
+    if(ip == _ip && port == _port && socket->isWritable())return ;
+    if(socket->isWritable())socket->close();
     ip = _ip;
     port = _port;
     connect(socket,SIGNAL(connected()),this,SIGNAL(sig_connect()));
     connect(socket,SIGNAL(readyRead()),this,SLOT(slot_readRead()));
-    connect(socket,SIGNAL(disconnected()),this,SLOT(slot_disconnect()));
     connect(socket,SIGNAL(disconnected()),this,SIGNAL(sig_disconnect()));
     socket->connectToHost(_ip,_port);
 }
 
 void TcpClient::slot_send(QByteArray qba)
 {
-    socket->write(qba);
+    if(socket!=nullptr){
+        qDebug()<<"qba.length ="<<qba.length();
+        socket->write(qba);
+        socket->flush();
+    }
 }
 
 void TcpClient::slot_readRead()
@@ -33,5 +38,6 @@ void TcpClient::slot_readRead()
 
 void TcpClient::slot_disconnect()
 {
-    socket->connectToHost(ip,port);
+    if(socket!=nullptr)
+        socket->close();
 }

@@ -5,34 +5,42 @@
 #include <iostream>
 #include "protocol.h"
 
-MsgCenter::MsgCenter(QObject *parent) : QObject(parent)
+MsgCenter::MsgCenter(QObject *parent) : QObject(parent),
+    agvconnection(nullptr),
+    currentSelectIndex(0)
 {
 
 }
+
 MsgCenter::~MsgCenter()
 {
-
+    if(agvconnection)delete agvconnection;
 }
-void MsgCenter::init()
+
+void MsgCenter::selectAgvChanged(int index)
 {
-    //根据配置文件，载入agv
-    auto agv_infos = g_config.getAgvInfos();
-    foreach (auto ai, agv_infos) {
-        Agv *a = new Agv(static_cast<AgvInfo *>(ai));
-        a->connToServer();
-        agvs.push_back(a);
-        connect(a,SIGNAL(sig_connect()),this,SLOT(slot_connect()));
-        connect(a,SIGNAL(sig_disconnect()),this,SLOT(slot_disconnect()));
+    agv1info->setStatus(0);
+    agv2info->setStatus(0);
+    agv3info->setStatus(0);
+    currentSelectIndex = index;
+    if(index == 0){
+        agvconnection->connectToServer(agv1info->ip(),agv1info->port());
+    }else if(index == 1){
+        agvconnection->connectToServer(agv2info->ip(),agv2info->port());
+    }else if(index == 2){
+        agvconnection->connectToServer(agv3info->ip(),agv3info->port());
     }
 }
 
-QList<QObject *> MsgCenter::getAgvInfos()
+void MsgCenter::init()
 {
-    return g_config.getAgvInfos();
-}
-void MsgCenter::setAgvInfos(QList<QObject *> infos)
-{
-    g_config.setAgvInfos(infos);
+    agvconnection = new AgvConnection();
+
+    connect(agvconnection,SIGNAL(sig_connect()),this,SLOT(slot_connect()));
+    connect(agvconnection,SIGNAL(sig_disconnect()),this,SLOT(slot_disconnect()));
+
+    agvconnection->connectToServer(agv1info->ip(),agv1info->port());
+    agvconnection->start();
 }
 
 void MsgCenter::setFlagBz(bool _bz)
@@ -48,32 +56,34 @@ void MsgCenter::setFlagLift(bool _lift)
     g_flag_lift = _lift;
 }
 
-//void MsgCenter::sendAgv(int index)
-//{
-//    if(index>agvs.length())return ;
-//    auto a = agvs[index];
-//    //a->send(qba);
-//}
-
+void MsgCenter::setSpeed(int sp)
+{
+    g_speed = sp;
+}
+void MsgCenter::setTurn(int tn)
+{
+    g_turn = tn;
+}
 
 void MsgCenter::slot_connect()
 {
-    auto aa = static_cast<Agv *>(sender());
-    for(int i=0;i<agvs.length();++i){
-        if(agvs[i] == aa){
-            emit sig_connect(i);
-            break;
-        }
+
+    if(currentSelectIndex == 0){
+        agv1info->setStatus(1);
+    }else if(currentSelectIndex == 1){
+        agv2info->setStatus(1);
+    }else if(currentSelectIndex == 2){
+        agv3info->setStatus(1);
     }
 }
 
 void MsgCenter::slot_disconnect()
 {
-    auto aa = static_cast<Agv *>(sender());
-    for(int i=0;i<agvs.length();++i){
-        if(agvs[i] == aa){
-            emit sig_disconnect(i);
-            break;
-        }
+    if(currentSelectIndex == 0){
+        agv1info->setStatus(0);
+    }else if(currentSelectIndex == 1){
+        agv2info->setStatus(0);
+    }else if(currentSelectIndex == 2){
+        agv3info->setStatus(0);
     }
 }

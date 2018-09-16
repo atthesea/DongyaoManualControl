@@ -6,6 +6,7 @@ import "../common" as COMMON
 
 
 Page {
+    id:mainPage
     header: ToolBar{
         id:toolBar
         contentHeight:30
@@ -19,7 +20,6 @@ Page {
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    //TODO
                     window.showAdmin()
                 }
             }
@@ -33,10 +33,6 @@ Page {
         }
     }
 
-    ButtonGroup {
-        id: buttonGroup
-    }
-
     Rectangle{
         id:rrr
         width: 0
@@ -45,19 +41,46 @@ Page {
         anchors.centerIn: parent
     }
 
-    //TODO:
-    ListView {
-        id:agvSelect
-        anchors.left: parent.left
-        anchors.top: parent.top
-        width: 100; height: 200
+    Column {
+        COMMON.QyhRadioWithStatusIndicator {
+            id:agv1Radio
 
-        model: msgCenter.getAgvInfos()
-        delegate: COMMON.QyhRadioDelegate {
-            text: modelData.name
-            checked: index == 0
-            isConnect: modelData.status === 1
-            ButtonGroup.group: buttonGroup
+            text: "agv1"
+            checked: true
+            isConnect: agv1info.status === 1
+            onCheckedChanged: {
+                if(checked){
+                    agv2Radio.checked = false
+                    agv3Radio.checked = false
+                    msgCenter.selectAgvChanged(0)
+                }
+            }
+        }
+        COMMON.QyhRadioWithStatusIndicator {
+            id:agv2Radio
+            text: "agv2"
+            checked: false
+            isConnect: agv2info.status === 1
+            onCheckedChanged: {
+                if(checked){
+                    agv1Radio.checked = false
+                    agv3Radio.checked = false
+                    msgCenter.selectAgvChanged(1)
+                }
+            }
+        }
+        COMMON.QyhRadioWithStatusIndicator {
+            id:agv3Radio
+            text: "agv3"
+            checked: false
+            isConnect: agv3info.status === 1
+            onCheckedChanged: {
+                if(checked){
+                    agv2Radio.checked = false
+                    agv1Radio.checked = false
+                    msgCenter.selectAgvChanged(2)
+                }
+            }
         }
     }
 
@@ -74,6 +97,7 @@ Page {
             if(checked){
                 bzCheckBox.checked = true
             }
+            msgCenter.setFlagSpeed(checked)
         }
     }
 
@@ -86,9 +110,7 @@ Page {
         text: qsTr("顶升")
         checked: false
         onCheckStateChanged: {
-            if(checked){
-
-            }
+            msgCenter.setFlagLift(checked)
         }
     }
 
@@ -101,8 +123,11 @@ Page {
         text: qsTr("抱闸")
         checked: false
         onCheckedChanged: {
+            if(!checked){
+                speedCheckBox.checked = false
+            }
             if(checked){
-
+                msgCenter.setFlagBz(checked)
             }
         }
     }
@@ -110,29 +135,43 @@ Page {
     COMMON.QyhVSlider{
         titletext:"速度"
         id:speedSlider
+
         anchors.verticalCenter: rrr.verticalCenter
-        anchors.left: parent.left
-        anchors.leftMargin: rrr.x/2+30
-        from: 100
+        anchors.right: parent.right
+        anchors.rightMargin: rrr.x/2 - width/2
+
+        from: -100
         value: 0
-        to: -100
+        to: 100
         stepSize: 1
+
         orientation:Qt.Vertical
+        onValueChanged: {
+            msgCenter.setSpeed(value);
+        }
     }
 
     COMMON.QyhHSlider{
         titletext:"转向"
         id:turnSlider
+
         anchors.verticalCenter: rrr.verticalCenter
-        anchors.right: parent.right
-        anchors.rightMargin: rrr.x/2 - width/2
+        anchors.left: parent.left
+        anchors.leftMargin: rrr.x/2+30
+
         from: 100
         value: 0
         to: -100
         stepSize: -1
         orientation:Qt.Horizontal
+        onValueChanged: {
+            msgCenter.setTurn(value)
+        }
     }
 
+    function init()
+    {
 
+    }
 
 }

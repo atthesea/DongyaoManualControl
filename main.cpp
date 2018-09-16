@@ -19,6 +19,9 @@ int main(int argc, char *argv[])
     QQmlContext *ctxt = engine.rootContext();
     ctxt->setContextProperty("g_config", &g_config);
     ctxt->setContextProperty("msgCenter", &msgCenter);
+    ctxt->setContextProperty("agv1info", agv1info);
+    ctxt->setContextProperty("agv2info", agv2info);
+    ctxt->setContextProperty("agv3info", agv3info);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

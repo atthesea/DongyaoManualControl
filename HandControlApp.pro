@@ -17,9 +17,9 @@ SOURCES += \
     config.cpp \
     global.cpp \
     msgcenter.cpp \
-    agv.cpp \
     tcpclient.cpp \
-    agvinfo.cpp
+    agvinfo.cpp \
+    agvconnection.cpp
 
 
 RESOURCES += qml.qrc
@@ -39,9 +39,9 @@ HEADERS += \
     config.h \
     global.h \
     msgcenter.h \
-    agv.h \
     tcpclient.h \
-    agvinfo.h
+    agvinfo.h \
+    agvconnection.h
 
 
 # assuming you want to deploy qml/foo/main.qml file, you need to add the flowing lines to your .pro/.pri file(s)

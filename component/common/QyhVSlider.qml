@@ -25,14 +25,14 @@ Slider {
         }
 
         Text {
-            text: ""+control.from
+            text: ""+control.to
             anchors.bottom:parent.top
             anchors.left: parent.right
             anchors.leftMargin: 20
         }
 
         Text {
-            text: ""+control.to
+            text: ""+control.from
             anchors.top:parent.bottom
             anchors.left: parent.right
             anchors.leftMargin: 20

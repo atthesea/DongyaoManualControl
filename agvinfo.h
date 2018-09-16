@@ -19,10 +19,19 @@ public:
     explicit AgvInfo(QObject *parent = nullptr);
 
     AgvInfo(const AgvInfo &b){
-        m_name = b.m_name;
-        m_ip = b.m_ip;
-        m_port = b.m_port;
-        m_status = b.m_status;
+        setName(b.m_name);
+        setIp(b.m_ip);
+        setPort(b.m_port);
+        setStatus(b.m_status);
+    }
+
+    AgvInfo &operator =(const AgvInfo &b){
+        AgvInfo a;
+        a.setName(b.m_name);
+        a.setIp(b.m_ip);
+        a.setPort(b.m_port);
+        a.setStatus(b.m_status);
+        return a;
     }
 
     QString name(){return m_name;}

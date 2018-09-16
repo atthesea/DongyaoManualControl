@@ -16,9 +16,9 @@ signals:
 public slots:
     void slot_connectToServer(QString _ip,int _port);
     void slot_send(QByteArray qba);
+    void slot_disconnect();
 private slots:
     void slot_readRead();
-    void slot_disconnect();
 private:
     QTcpSocket *socket;
     QString ip;

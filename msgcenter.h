@@ -10,7 +10,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
-#include "agv.h"
+//#include "agv.h"
+#include "agvconnection.h"
 
 //AGV基本信息
 typedef struct _AGV_BASE_INFO
@@ -31,16 +32,15 @@ public:
 
     Q_INVOKABLE void init();
 
-    Q_INVOKABLE QList<QObject *> getAgvInfos();
-    Q_INVOKABLE void setAgvInfos(QList<QObject *> infos);
-
     Q_INVOKABLE void setFlagBz(bool _bz);
     Q_INVOKABLE void setFlagSpeed(bool _speed);
     Q_INVOKABLE void setFlagLift(bool _lift);
+
+    Q_INVOKABLE void setSpeed(int sp);
+    Q_INVOKABLE void setTurn(int tn);
+
+    Q_INVOKABLE void selectAgvChanged(int index);
 signals:
-    //连接状态改变
-    void sig_connect(int);
-    void sig_disconnect(int);
 
 public slots:
     void slot_connect();
@@ -48,7 +48,8 @@ public slots:
 private slots:
 
 private:
-    QList<Agv *> agvs;
+    AgvConnection *agvconnection;
+    int currentSelectIndex;
 };
 
 #endif // MSGCENTER_H
