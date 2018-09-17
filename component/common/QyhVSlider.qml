@@ -6,7 +6,7 @@ Slider {
     id: control
     value: 0
     property string titletext: ""
-
+    height: 450
     background: Rectangle {
         x: control.leftPadding + control.availableWidth / 2 - width / 2
         y: control.topPadding
@@ -56,9 +56,9 @@ Slider {
     handle: Rectangle {
         y: control.topPadding + control.visualPosition * (control.availableHeight - height)
         x: control.leftPadding  + control.availableWidth / 2 - width / 2
-        implicitWidth: 26
-        implicitHeight: 26
-        radius: 13
+        implicitWidth: 60
+        implicitHeight: 60
+        radius: 30
         color: control.pressed ? "#f0f0f0" : "#f6f6f6"
         border.color: "#bdbebf"
 

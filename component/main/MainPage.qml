@@ -17,10 +17,11 @@ Page {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin: 10
+            visible: false
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
-                    window.showAdmin()
+                    //window.showAdmin()
                 }
             }
         }
@@ -126,9 +127,7 @@ Page {
             if(!checked){
                 speedCheckBox.checked = false
             }
-            if(checked){
-                msgCenter.setFlagBz(checked)
-            }
+            msgCenter.setFlagBz(checked)
         }
     }
 
@@ -157,7 +156,7 @@ Page {
 
         anchors.verticalCenter: rrr.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: rrr.x/2+30
+        anchors.leftMargin: 130
 
         from: 100
         value: 0

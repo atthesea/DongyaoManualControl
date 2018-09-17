@@ -79,7 +79,7 @@ void AgvConnection::run()
             if(g_flag_bz)xx |= 0x01<<2;
             if(g_flag_speed)xx |= 0x01<<1;
             if(g_flag_lift)xx |= 0x01;
-
+            //qDebug()<<"xx="<<xx;
             qba.append((char)xx);
             qba.append((char)g_turn);
             qba.append((char)g_speed);
